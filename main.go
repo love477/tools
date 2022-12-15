@@ -2,12 +2,15 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 	"runtime"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/love477/tools/demo"
 	docs "github.com/love477/tools/docs"
 	swaggerfiles "github.com/swaggo/files"
@@ -47,15 +50,7 @@ func main1() {
 }
 
 func main() {
-	a := 2
-	switch a {
-	case 1, 2:
-		fmt.Println("case 1&2")
-	case 3:
-		fmt.Println("case 3")
-	default:
-		fmt.Println("default")
-	}
+	runGame()
 }
 
 func testWorkqueue() {
@@ -84,5 +79,27 @@ func printGoroutine() {
 	ticker := time.NewTicker(1 * time.Second)
 	for range ticker.C {
 		fmt.Println("goroutines: ", runtime.NumGoroutine())
+	}
+}
+
+type Game struct{}
+
+func (g *Game) Update() error {
+	return nil
+}
+
+func (g *Game) Draw(screen *ebiten.Image) {
+	ebitenutil.DebugPrint(screen, "Hello, World!")
+}
+
+func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
+	return 320, 240
+}
+
+func runGame() {
+	ebiten.SetWindowSize(640, 480)
+	ebiten.SetWindowTitle("Hello, World!")
+	if err := ebiten.RunGame(&Game{}); err != nil {
+		log.Fatal(err)
 	}
 }
