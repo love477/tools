@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"math/rand"
@@ -50,7 +51,18 @@ func main1() {
 }
 
 func main() {
-	runGame()
+	// runGame()
+	fmt.Println("start main")
+	ctx := context.Background()
+	// timeoutCtx, cancel := context.WithTimeout(ctx, 3*time.Second)
+	go test(ctx)
+	// time.Sleep(5 * time.Second)
+	ctx.Done()
+}
+
+func test(ctx context.Context) {
+	time.Sleep(3 * time.Second)
+	fmt.Println("test log")
 }
 
 func testWorkqueue() {
